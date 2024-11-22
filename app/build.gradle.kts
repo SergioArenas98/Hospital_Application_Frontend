@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.sejuma.hospitalapplication"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.sejuma.hospitalapplication"
