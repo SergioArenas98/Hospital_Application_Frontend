@@ -120,16 +120,4 @@ fun NurseLoginScreen(onBackPressed: () -> Unit){
         Text(text = "Back")
     }
 
-    @Composable
-    fun LoggedInView() {
-        // Pantalla que se muestra después de iniciar sesión correctamente
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .wrapContentSize(Alignment.Center)
-                .background(Color.Green)
-        ) {
-            Text(text = "Logged In", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
-        }
-    }
 }
