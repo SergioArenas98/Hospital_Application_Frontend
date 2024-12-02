@@ -33,7 +33,7 @@ fun HospitalApplication() {
     // Variable para controlar la pantalla de búsqueda
     var showNurseSearchScreen by remember { mutableStateOf(false) }
     var showNurseLoginScreen by remember { mutableStateOf(false) }
-    // var showNurseLogin by remember { mutableStateOf(false) }
+    var showNurseListScreen by remember { mutableStateOf(false) }
 
     // var showAllNurses by remember { mutableStateOf(false) }
 
@@ -47,10 +47,9 @@ fun HospitalApplication() {
         // If showNurseLogin is true, show its screen
         } else if (showNurseLoginScreen) {
             NurseLoginScreen( onBackPressed = { showNurseLoginScreen = false })
-        /* // If showAllNurses is true, show its screen
-        } else if (showAllNurses) {
-            ShowAllNursesScreen()
-        */
+        // If showAllNurses is true, show its screen
+        } else if (showNurseListScreen) {
+            NurseListScreen( onBackPressed = { showNurseListScreen = false })
         // Show main menu if other options are false
         } else {
             Text(
@@ -88,7 +87,7 @@ fun HospitalApplication() {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(onClick = {
-                // showAllNurses = true
+                showNurseListScreen = true
             }) {
                 Text(text = stringResource(id = R.string.showAllNursesButton))
             }
