@@ -15,6 +15,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.sejuma.hospitalapplication.viewmodel.NurseViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +37,8 @@ fun HospitalApplication() {
     var showNurseLoginScreen by remember { mutableStateOf(false) }
     var showNurseListScreen by remember { mutableStateOf(false) }
 
-    // var showAllNurses by remember { mutableStateOf(false) }
+    // Obtenemos la instancia del NurseViewModel
+    val nurseViewModel: NurseViewModel = viewModel()
 
     Column(modifier = Modifier
         .fillMaxWidth()

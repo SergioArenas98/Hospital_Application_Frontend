@@ -9,34 +9,20 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
-data class Nurse(
-    val name: String,
-    val user: String,
-    val password: String,
-)
-
-val nurses = listOf(
-    Nurse("Sergio", "sergio.nurse", "sergio123"),
-    Nurse("David", "david.nurse", "david123"),
-    Nurse("Jose", "jose.nurse", "jose123"),
-    Nurse("Fiorella", "fiorella.nurse", "fiorella123"),
-    Nurse("Sergio", "sergio.nurse", "sergio123"),
-    Nurse("Jose", "jose.nurse", "jose123"),
-    Nurse("Fiorella", "fiorella.nurse", "fiorella123"),
-    Nurse("Sergio", "sergio.nurse", "sergio123"),
-    Nurse("Jose", "jose.nurse", "jose123"),
-    Nurse("Fiorella", "fiorella.nurse", "fiorella123"),
-    Nurse("Sergio", "sergio.nurse", "sergio123"),
-    Nurse("David", "david.nurse", "david123"),
-    Nurse("Fiorella", "fiorella.nurse", "fiorella123")
-)
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.sejuma.hospitalapplication.viewmodel.NurseViewModel
+import com.sejuma.hospitalapplication.model.Nurse
 
 @Composable
-fun NurseListScreen(onBackPressed: () -> Unit) {
-    Column(modifier = Modifier.fillMaxSize()) { // Corregido: Usar Modifier directamente
+fun NurseListScreen(onBackPressed: () -> Unit, nurseViewModel: NurseViewModel = viewModel()) {
+
+    // Obtengo la lista de enfermeros de LiveData y lo observo con observeAsState()
+    val nurses = nurseViewModel.nurses.observeAsState(initial = listOf())
+
+    Column(modifier = Modifier.fillMaxSize()) {
         // Botón para regresar al menú principal
         Button(
             onClick = onBackPressed,
@@ -47,7 +33,7 @@ fun NurseListScreen(onBackPressed: () -> Unit) {
 
         // Lista de enfermeras usando LazyColumn
         LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-            items(nurses) { nurse ->
+            items(nurses.value) { nurse ->
                 NurseItem(nurse = nurse)
             }
         }
