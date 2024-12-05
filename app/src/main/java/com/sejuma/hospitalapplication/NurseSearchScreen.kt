@@ -13,54 +13,37 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sejuma.hospitalapplication.viewmodel.NurseViewModel
 
 @Composable
-fun NurseSearchScreen(onBackPressed: () -> Unit) {
+fun NurseSearchScreen(
+    nurseViewModel: NurseViewModel,
+    onBackPressed: () -> Unit
+) {
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
     var showResults by remember { mutableStateOf<Boolean>(false) }
     var processedQuery by remember { mutableStateOf<String>("") }
 
-    // Nurse Class
-    data class Nurse(
-        val name: String,
-        val user: String,
-        val password: String
-    )
+    // Observe nurse data from ViewModel
+    val nurses by nurseViewModel.nurses.observeAsState(emptyList())
 
-    // Nurse List
-    val nurses = listOf(
-        Nurse("Sergio", "sergio.nurse", "sergio123"),
-        Nurse("David", "david.nurse", "david123"),
-        Nurse("Jose", "jose.nurse", "jose123"),
-        Nurse("Fiorella", "fiorella.nurse", "fiorella123"),
-        Nurse("Sergio", "sergio.nurse", "sergio123"),
-        Nurse("Jose", "jose.nurse", "jose123"),
-        Nurse("Fiorella", "fiorella.nurse", "fiorella123"),
-        Nurse("Sergio", "sergio.nurse", "sergio123"),
-        Nurse("Jose", "jose.nurse", "jose123"),
-        Nurse("Fiorella", "fiorella.nurse", "fiorella123"),
-        Nurse("Sergio", "sergio.nurse", "sergio123"),
-        Nurse("David", "david.nurse", "david123"),
-        Nurse("Fiorella", "fiorella.nurse", "fiorella123")
-    )
-
-    // Check if search field is empty
-    val filteredNurses = if (searchQuery.text.isEmpty()) {
-        emptyList()
-    } else {
-        nurses.filter { it.name.contains(searchQuery.text, ignoreCase = true) }
+    // Filter list of nurses based on search query
+    val filteredNurses = nurses.filter {
+        searchQuery.text.isNotEmpty() &&
+                (it.name.contains(searchQuery.text, ignoreCase = true) ||
+                        it.user.contains(searchQuery.text, ignoreCase = true))
     }
 
     // Limit to 3 results
@@ -71,7 +54,7 @@ fun NurseSearchScreen(onBackPressed: () -> Unit) {
         .padding(16.dp)) {
 
         Text(
-            text = "Search Nurse by Name",
+            text = "Search Nurse",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp, top = 16.dp),
@@ -79,7 +62,6 @@ fun NurseSearchScreen(onBackPressed: () -> Unit) {
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 fontSize = 24.sp,
-                fontStyle = FontStyle.Italic
             )
         )
 
@@ -102,7 +84,7 @@ fun NurseSearchScreen(onBackPressed: () -> Unit) {
                     Box(modifier = Modifier.padding(8.dp)) {
                         if (searchQuery.text.isEmpty()) {
                             Text(
-                                text = "Insert a name...",
+                                text = "Insert a name or an username...",
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                             )
                         }
@@ -115,20 +97,22 @@ fun NurseSearchScreen(onBackPressed: () -> Unit) {
         // Spacer
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Button to go back to main menu
-        Button(onClick = onBackPressed) {
-            Text(text = "Back")
+        // Search button
+        Button(modifier = Modifier.padding(8.dp),
+            onClick = {
+            processedQuery = searchQuery.text
+            showResults = true
+        }) {
+            Text(text = "Search")
         }
 
         // Search button
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Search button
-        Button(onClick = {
-            processedQuery = searchQuery.text
-            showResults = true
-        }) {
-            Text(text = "Search")
+        // Button to go back to main menu
+        Button(modifier = Modifier.padding(8.dp),
+            onClick = onBackPressed) {
+            Text(text = "Back")
         }
 
         // Spacer
@@ -171,5 +155,5 @@ fun NurseSearchScreen(onBackPressed: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun NurseSearchScreenPreview() {
-    //NurseSearchScreen(onBackClick = { /* Handle back click */ })
+    //NurseSearchScreen(nurseViewModel) { }
 }

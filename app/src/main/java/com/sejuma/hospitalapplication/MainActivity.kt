@@ -22,15 +22,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val nurseViewModel: NurseViewModel = viewModel()
             MaterialTheme {
-                HospitalApplication()
+                HospitalApplication(nurseViewModel)
             }
         }
     }
 }
 
 @Composable
-fun HospitalApplication() {
+fun HospitalApplication(nurseViewModel: NurseViewModel) {
 
     // Variable para controlar la pantalla de búsqueda
     var showNurseSearchScreen by remember { mutableStateOf(false) }
@@ -46,7 +47,10 @@ fun HospitalApplication() {
 
         // If showNurseSearchScreen is true, show its screen
         if (showNurseSearchScreen) {
-            NurseSearchScreen( onBackPressed = { showNurseSearchScreen = false })
+            NurseSearchScreen(
+                nurseViewModel = nurseViewModel,
+                onBackPressed = { showNurseSearchScreen = false }
+            )
         // If showNurseLogin is true, show its screen
         } else if (showNurseLoginScreen) {
             NurseLoginScreen( onBackPressed = { showNurseLoginScreen = false })
@@ -101,5 +105,7 @@ fun HospitalApplication() {
 @Preview(showBackground = true)
 @Composable
 fun AppScreenPreview() {
-    HospitalApplication()
+    HospitalApplication(
+        nurseViewModel = NurseViewModel()
+    )
 }
