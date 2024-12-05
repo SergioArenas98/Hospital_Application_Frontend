@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -25,18 +26,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.sejuma.hospitalapplication.viewmodel.NurseViewModel
 
 @Composable
 fun NurseSearchScreen(
-    nurseViewModel: NurseViewModel,
-    onBackPressed: () -> Unit
+    navController: NavController,
+    nurseViewModel: NurseViewModel
 ) {
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
     var showResults by remember { mutableStateOf<Boolean>(false) }
     var processedQuery by remember { mutableStateOf<String>("") }
 
-    // Observe nurse data from ViewModel
+    // Get nurse data from ViewModel
     val nurses by nurseViewModel.nurses.observeAsState(emptyList())
 
     // Filter list of nurses based on search query
@@ -111,8 +114,8 @@ fun NurseSearchScreen(
 
         // Button to go back to main menu
         Button(modifier = Modifier.padding(8.dp),
-            onClick = onBackPressed) {
-            Text(text = "Back")
+            onClick = { navController.navigate("homeScreen") }) {
+            Text(text = stringResource(id = R.string.backToMenuButton))
         }
 
         // Spacer
@@ -155,5 +158,7 @@ fun NurseSearchScreen(
 @Preview(showBackground = true)
 @Composable
 fun NurseSearchScreenPreview() {
-    //NurseSearchScreen(nurseViewModel) { }
+    val navController = rememberNavController()
+    val nurseViewModel = NurseViewModel()
+    NurseSearchScreen(navController = navController, nurseViewModel = nurseViewModel)
 }

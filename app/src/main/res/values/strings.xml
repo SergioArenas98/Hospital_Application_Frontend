@@ -3,4 +3,7 @@
     <string name="nurseSearchButton">Search Nurse by Name</string>
     <string name="nurseLoginButton">Login Nurse</string>
     <string name="showAllNursesButton">Show All Nurses</string>
+    <string name="backToMenuButton">Back to Menu</string>
+    <string name="registerButton">Register</string>
+    <string name="loginButton">Login</string>
 </resources>
