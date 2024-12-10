@@ -38,15 +38,25 @@ fun HomeScreen(navController: NavHostController) {
 
         // Button to go to nurse search screen
         Button(onClick = { navController.navigate("nurseSearchScreen") }) {
-            Text(text = stringResource(id = R.string.nurseSearchButton))
+            Text(
+                text = stringResource(id = R.string.nurseSearchButton),
+                style = TextStyle (
+                    fontSize = 14.sp
+                )
+            )
         }
 
         // Spacer
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // Button to show all nurses
         Button(onClick = { navController.navigate("nurseListScreen") }) {
-            Text(text = stringResource(id = R.string.showAllNursesButton))
+            Text(
+                text = stringResource(id = R.string.showAllNursesButton),
+                style = TextStyle (
+                    fontSize = 14.sp
+                )
+            )
         }
     }
 }

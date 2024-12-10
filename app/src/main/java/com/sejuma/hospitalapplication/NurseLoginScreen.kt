@@ -47,6 +47,7 @@ fun NurseLoginScreen(
     fun validateCredentials(user: String, password: String): Boolean {
         return nurses.any { it.user == user && it.password == password }
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()

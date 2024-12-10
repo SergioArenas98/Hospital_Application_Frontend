@@ -14,8 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sejuma.hospitalapplication.viewmodel.NurseViewModel
@@ -30,15 +34,38 @@ fun NurseListScreen(
     // Get nurse data from ViewModel
     val nurses = nurseViewModel.nurses.observeAsState(initial = listOf())
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)) {
+
+        // Title text
+        Text(
+            text = "Search Nurse",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            style = TextStyle (
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                fontSize = 24.sp,
+            )
+        )
+
         // Button to go back to main menu
-        Button(modifier = Modifier.padding(start = 20.dp, top = 20.dp),
+        Button(modifier = Modifier
+            .padding(top = 20.dp, start = 8.dp),
             onClick = { navController.navigate("homeScreen") }) {
-            Text(text = stringResource(id = R.string.backToMenuButton))
+            Text(text = stringResource(id = R.string.backToMenuButton),
+                style = TextStyle (
+                    fontSize = 14.sp
+                )
+            )
         }
 
         // Listing nurses using LazyColumn
-        LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        LazyColumn(modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 8.dp)) {
             items(nurses.value) { nurse ->
                 NurseItem(nurse = nurse)
             }
