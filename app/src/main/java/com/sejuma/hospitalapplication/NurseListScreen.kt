@@ -1,10 +1,13 @@
 package com.sejuma.hospitalapplication
 
+import android.media.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -13,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -20,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.Image
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sejuma.hospitalapplication.viewmodel.NurseViewModel
@@ -82,11 +87,26 @@ fun NurseItem(nurse: Nurse) {
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 4.dp
     ) {
-        Column(modifier = Modifier.padding(8.dp)) {
-            Text(text = "Name: ${nurse.name}", style = MaterialTheme.typography.bodyLarge)
-            Text(text = "User: ${nurse.user}", style = MaterialTheme.typography.bodyMedium)
-            Text(text = "Password: ${nurse.password}", style = MaterialTheme.typography.bodySmall)
+        Row(
+            modifier = Modifier.padding(8.dp)
+        ) {
+            //User image
+            Image(
+                painter = painterResource(id = nurse.imageRes), //load image from drawable
+                contentDescription = "Image of Nurse ${nurse.name}",
+                modifier = Modifier
+                    .size(64.dp)
+                    .padding(end = 8.dp)
+            )
+
+            //User information
+            Column(modifier = Modifier.padding(8.dp)) {
+                Text(text = "Name: ${nurse.name}", style = MaterialTheme.typography.bodyLarge)
+                Text(text = "User: ${nurse.user}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "Password: ${nurse.password}", style = MaterialTheme.typography.bodySmall)
+            }
         }
+
     }
 }
 
