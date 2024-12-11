@@ -18,15 +18,33 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun HomeScreen(navController: NavHostController) {
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+    ) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+        Button(onClick = {
+            navController.navigate("NurseLoginScreen")
+        }) {
+            Text(text = "LogOut")
+        }
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
         Text(
             text = "Hello to Hospital Application!",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp, top = 16.dp),
-            style = TextStyle (
+            style = TextStyle(
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 fontSize = 24.sp
@@ -40,7 +58,7 @@ fun HomeScreen(navController: NavHostController) {
         Button(onClick = { navController.navigate("nurseSearchScreen") }) {
             Text(
                 text = stringResource(id = R.string.nurseSearchButton),
-                style = TextStyle (
+                style = TextStyle(
                     fontSize = 14.sp
                 )
             )
@@ -53,12 +71,13 @@ fun HomeScreen(navController: NavHostController) {
         Button(onClick = { navController.navigate("nurseListScreen") }) {
             Text(
                 text = stringResource(id = R.string.showAllNursesButton),
-                style = TextStyle (
+                style = TextStyle(
                     fontSize = 14.sp
                 )
             )
         }
     }
+}
 }
 
 @Preview(showBackground = true)

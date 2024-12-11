@@ -19,4 +19,10 @@ class NurseViewModel : ViewModel() {
     }
     // LiveData expuesto para que la UI pueda observar la lista de enfermeros.
     val nurses: LiveData<List<Nurse>> get() = _nurses
+    fun addNurse(nurse: Nurse) {
+        val updatedList = _nurses.value?.toMutableList() ?: mutableListOf()
+        updatedList.add(nurse)
+        _nurses.value = updatedList // Notifica a los observadores
+        println("Added nurse: ${nurse.name}, total nurses: ${_nurses.value?.size}")
+    }
 }
