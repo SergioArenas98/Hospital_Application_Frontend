@@ -20,23 +20,8 @@ fun HomeScreen(navController: NavHostController) {
 
     Column(
         modifier = Modifier
+            .fillMaxWidth()
             .fillMaxSize()
-            .padding(10.dp)
-    ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-    ) {
-        Button(onClick = {
-            navController.navigate("NurseLoginScreen")
-        }) {
-            Text(text = "LogOut")
-        }
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
             .padding(16.dp)
     ) {
         Text(
@@ -76,8 +61,21 @@ fun HomeScreen(navController: NavHostController) {
                 )
             )
         }
+
+        // Spacer
+        Spacer(modifier = Modifier.height(100.dp))
+
+        // Button to logout
+        Button(onClick = { navController.navigate("NurseLoginScreen") }) {
+            Text(
+                text = stringResource(id = R.string.logoutButton),
+                style = TextStyle(
+                    fontSize = 14.sp
+                )
+            )
+        }
+
     }
-}
 }
 
 @Preview(showBackground = true)

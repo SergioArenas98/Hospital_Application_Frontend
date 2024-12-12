@@ -1,6 +1,5 @@
 package com.sejuma.hospitalapplication
 
-import android.media.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,6 +24,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sejuma.hospitalapplication.viewmodel.NurseViewModel
@@ -90,23 +92,44 @@ fun NurseItem(nurse: Nurse) {
         Row(
             modifier = Modifier.padding(8.dp)
         ) {
-            //User image
+            // User image
             Image(
-                painter = painterResource(id = nurse.imageRes), //load image from drawable
+                painter = painterResource(id = nurse.imageRes),
                 contentDescription = "Image of Nurse ${nurse.name}",
                 modifier = Modifier
                     .size(64.dp)
-                    .padding(end = 8.dp)
+                    .padding(start = 8.dp)
             )
 
-            //User information
-            Column(modifier = Modifier.padding(8.dp)) {
-                Text(text = "Name: ${nurse.name}", style = MaterialTheme.typography.bodyLarge)
-                Text(text = "User: ${nurse.user}", style = MaterialTheme.typography.bodyMedium)
-                Text(text = "Password: ${nurse.password}", style = MaterialTheme.typography.bodySmall)
+            // User information
+            Column(
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .align(Alignment.CenterVertically)
+            ) {
+                Text(
+                    text = nurse.name,
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                    )
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "User: ${nurse.user}",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.bodyMedium.fontSize
+                    )
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "Password: ${nurse.password}",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.bodyMedium.fontSize
+                    )
+                )
             }
         }
-
     }
 }
 

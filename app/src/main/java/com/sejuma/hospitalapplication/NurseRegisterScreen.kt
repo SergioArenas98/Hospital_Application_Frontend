@@ -22,10 +22,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.sejuma.hospitalapplication.model.Nurse
 import com.sejuma.hospitalapplication.viewmodel.NurseViewModel
 
@@ -45,11 +47,6 @@ fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseV
         return !nurses.any{it.user == user}
     }
 
-    Button(onClick = {
-        navController.navigate("NurseLoginScreen")
-    }) {
-        Text(text = "Back to Login")
-    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -65,7 +62,8 @@ fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseV
         )
 
         Spacer(modifier = Modifier.height(20.dp))
-    // name
+
+        // Name
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
@@ -74,8 +72,9 @@ fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseV
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-    // user
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // User
         OutlinedTextField(
             value = user,
             onValueChange = { user = it },
@@ -84,7 +83,8 @@ fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseV
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-    // password
+
+        // Password
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -93,12 +93,9 @@ fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseV
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-    // imagen
+        Spacer(modifier = Modifier.height(32.dp))
 
-
-        Spacer(modifier = Modifier.height(16.dp))
-
+        // Register Button
         Button(onClick = {
             registerSuccess = validateCredentials(user)
             showMessage = true
@@ -106,11 +103,10 @@ fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseV
                 var  newNurse: Nurse = Nurse(name, user, password, imageRes)
                 nurseViewModel.addNurse(newNurse)
                 navController.navigate("homeScreen")
-            }}) {
+            }
+        }) {
             Text(text = stringResource(id = R.string.registerButton))
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         if (showMessage) {
             if (registerSuccess) {
@@ -127,5 +123,20 @@ fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseV
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(onClick = {
+            navController.navigate("NurseLoginScreen")
+        }) {
+            Text(text = "Back to Login")
+        }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NurseRegisterScreenPreview() {
+    val navController = rememberNavController()
+    NurseRegisterScreen(navController = navController)
 }
