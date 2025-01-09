@@ -108,28 +108,16 @@ fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseV
             Text(text = stringResource(id = R.string.registerButton))
         }
 
-        if (showMessage) {
-            if (registerSuccess) {
-                Text(
-                    text = "You logged in successfully!",
-                    fontSize = 18.sp,
-                    color = Color.Green
-                )
-            } else {
-                Text(
-                    text = "Invalid credentials",
-                    fontSize = 18.sp,
-                    color = Color.Red
-                )
-            }
-        }
-
         Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Do you already have an account? Click below to login")
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         Button(onClick = {
             navController.navigate("NurseLoginScreen")
         }) {
-            Text(text = "Back to Login")
+            Text(text = "Login")
         }
     }
 }

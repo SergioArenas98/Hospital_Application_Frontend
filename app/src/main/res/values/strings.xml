@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Hospital Application</string>
-    <string name="nurseSearchButton">Search Nurse by Name</string>
+    <string name="profileButton">Profile</string>
     <string name="nurseLoginButton">Login Nurse</string>
-    <string name="showAllNursesButton">Show All Nurses</string>
+    <string name="showNursesButton">Show Nurses</string>
     <string name="backToMenuButton">Back to Menu</string>
     <string name="registerButton">Register</string>
     <string name="loginButton">Login</string>

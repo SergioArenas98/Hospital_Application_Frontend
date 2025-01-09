@@ -94,26 +94,14 @@ fun NurseLoginScreen(
             Text(text = "Login")
         }
 
-        Button(onClick = { navController.navigate("registerScreen") }) {
-            Text(text = stringResource(id = R.string.registerButton))
-        }
-
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (showMessage) {
-            if (loginSuccess) {
-                Text(
-                    text = "You logged in successfully!",
-                    fontSize = 18.sp,
-                    color = Color.Green
-                )
-            } else {
-                Text(
-                    text = "Invalid credentials",
-                    fontSize = 18.sp,
-                    color = Color.Red
-                )
-            }
+        Text(text = "Don't you have an account yet? Click below to register")
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(onClick = { navController.navigate("registerScreen") }) {
+            Text(text = stringResource(id = R.string.registerButton))
         }
     }
 }
