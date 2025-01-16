@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
                         NurseRegisterScreen(navController = navController)
                     }
                     composable("nurseSearchScreen") {
-                        NurseSearchScreen(navController = navController, nurseViewModel = viewModel())
+                        NurseSearchScreen(navController = navController, remoteViewModel = viewModel())
                     }
                     composable("profileScreen") {
                         ProfileScreen(navController = navController, nurseViewModel = viewModel())

@@ -34,10 +34,11 @@ import com.sejuma.hospitalapplication.viewmodel.NurseViewModel
 @Composable
 fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseViewModel = viewModel()){
 
+    var nurseId by remember { mutableStateOf(0) }
     var name by remember { mutableStateOf("") }
     var user by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var imageRes by remember { mutableStateOf(0) }
+    //var imageRes by remember { mutableStateOf(0) }
     var registerSuccess by remember { mutableStateOf(false) }
     var showMessage by remember { mutableStateOf(false) }
 
@@ -100,7 +101,7 @@ fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseV
             registerSuccess = validateCredentials(user)
             showMessage = true
             if (registerSuccess) {
-                var  newNurse: Nurse = Nurse(name, user, password, imageRes)
+                var  newNurse: Nurse = Nurse(nurseId, name, user, password)
                 nurseViewModel.addNurse(newNurse)
                 navController.navigate("homeScreen")
             }
