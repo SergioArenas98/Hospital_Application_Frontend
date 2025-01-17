@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
             MaterialTheme {
                 NavHost(navController = navController, startDestination = "nurseLoginScreen") {
                     composable("nurseLoginScreen") {
-                        NurseLoginScreen(navController = navController)
+                        NurseLoginScreen(navController = navController, remoteViewModel = viewModel())
                     }
                     composable("homeScreen") {
                         HomeScreen(navController = navController)
