@@ -22,7 +22,7 @@ sealed interface RemoteMessageUiState {
 }
 
 sealed interface LoginMessageUiState {
-    data class Success(val loginMessage: Boolean) : LoginMessageUiState
+    data class Success(val loginMessage: Nurse) : LoginMessageUiState
 
     object Error : LoginMessageUiState
     object Loading : LoginMessageUiState
@@ -33,7 +33,7 @@ interface RemoteNurseInterface {
     suspend fun getRemoteNurses(): List<Nurse>
 
     @POST("nurse/login")
-    suspend fun login(@Body loginRequest: LoginRequest): Boolean
+    suspend fun login(@Body loginRequest: LoginRequest): Nurse
 
 }
 
@@ -69,17 +69,10 @@ class RemoteViewModel : ViewModel() {
         viewModelScope.launch {
             _loginMessageUiState.value = LoginMessageUiState.Loading
             try {
-                Log.d("Login", "Iniciando conexión al servidor")
-
                 val endPoints = connection.create(RemoteNurseInterface::class.java)
                 val loginRequest = LoginRequest(user = username, password = password)
-
-                val response = endPoints.login(loginRequest)
-                if (response) {
-                    _loginMessageUiState.value = LoginMessageUiState.Success(true)
-                } else {
-                    _loginMessageUiState.value = LoginMessageUiState.Error
-                }
+                val nurse = endPoints.login(loginRequest)
+                _loginMessageUiState.value = LoginMessageUiState.Success(nurse)
             } catch (e: Exception) {
                 Log.e("Login", "Error durante el login: ${e.message}", e)
                 _loginMessageUiState.value = LoginMessageUiState.Error

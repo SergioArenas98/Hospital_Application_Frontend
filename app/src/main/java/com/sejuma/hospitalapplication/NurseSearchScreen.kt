@@ -1,5 +1,6 @@
 package com.sejuma.hospitalapplication
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -16,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.sejuma.hospitalapplication.model.Nurse
 import com.sejuma.hospitalapplication.viewmodel.RemoteMessageUiState
 import com.sejuma.hospitalapplication.viewmodel.RemoteViewModel
@@ -162,6 +165,11 @@ fun NurseSearchScreen(
 @Composable
 fun NurseItem(nurse: Nurse) {
 
+    val painter = rememberImagePainter(data = nurse.imageFile) {
+        placeholder(R.drawable.placeholder_image)
+        error(R.drawable.placeholder_image)
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -172,15 +180,12 @@ fun NurseItem(nurse: Nurse) {
         Row(
             modifier = Modifier.padding(8.dp)
         ) {
-            /*
-            // User image
-            Image(
-                painter = painterResource(id = nurse.imageRes),
-                contentDescription = "Image of Nurse ${nurse.name}",
-                modifier = Modifier
-                    .size(64.dp)
-                    .padding(start = 8.dp)
-            )*/
+                Image(
+                    painter = painter,
+                    contentDescription = "Image of Nurse ${nurse.name}",
+                    modifier = Modifier.size(64.dp)
+                )
+
 
             // User information
             Column(

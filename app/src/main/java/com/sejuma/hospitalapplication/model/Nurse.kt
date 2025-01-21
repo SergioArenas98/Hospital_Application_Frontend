@@ -5,7 +5,7 @@ data class Nurse(
     val name: String,
     val user: String,
     val password: String,
-    //val imageRes: Int,
+    val imageFile: String,
 )
 
 data class LoginRequest(
