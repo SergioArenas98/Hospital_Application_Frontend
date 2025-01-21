@@ -26,9 +26,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.sejuma.hospitalapplication.model.Nurse
 import com.sejuma.hospitalapplication.viewmodel.LoginMessageUiState
 import com.sejuma.hospitalapplication.viewmodel.RemoteViewModel
 
@@ -86,15 +88,15 @@ fun NurseLoginScreen(
                 Text(text = "Login")
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             when (loginMessageUiState) {
                 is LoginMessageUiState.Success -> {
-                    // Redirigir si el login es exitoso
                     LaunchedEffect(Unit) {
                         navController.navigate("homeScreen")
                     }
                 }
                 is LoginMessageUiState.Error -> {
-                    Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "Login failed. Please try again.",
                         style = TextStyle(
@@ -115,9 +117,15 @@ fun NurseLoginScreen(
                 .padding(bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Don't you have an account yet? Click below to register")
+            Text(
+                text = "Don't have an account yet? Click below to register",
+                modifier = Modifier.fillMaxWidth(),
+                style = TextStyle(
+                    textAlign = TextAlign.Center
+                )
+            )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Button(onClick = { navController.navigate("registerScreen") }) {
                 Text(text = stringResource(id = R.string.registerButton))

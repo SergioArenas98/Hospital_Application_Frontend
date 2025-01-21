@@ -20,10 +20,10 @@ class NurseViewModel : ViewModel() {
 
     private val _nurses = MutableLiveData<List<Nurse>>().apply {
         value = listOf(
-            Nurse(1, "Sergio", "sergio.nurse", "sergio123"),
-            Nurse(2, "David", "david.nurse", "david123"),
-            Nurse(3, "Jose", "jose.nurse", "jose123"),
-            Nurse(4, "Fiorella", "fiorella.nurse", "fiorella123")
+            Nurse(1, "Sergio", "sergio.nurse", "sergio123", ""),
+            Nurse(2, "David", "david.nurse", "david123", ""),
+            Nurse(3, "Jose", "jose.nurse", "jose123", ""),
+            Nurse(4, "Fiorella", "fiorella.nurse", "fiorella123", "")
         )
     }
 

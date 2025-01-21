@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,11 +35,11 @@ import com.sejuma.hospitalapplication.viewmodel.NurseViewModel
 @Composable
 fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseViewModel = viewModel()){
 
-    var nurseId by remember { mutableStateOf(0) }
+    var nurseId by remember { mutableIntStateOf(0) }
     var name by remember { mutableStateOf("") }
     var user by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    //var imageRes by remember { mutableStateOf(0) }
+    var imageFile by remember { mutableStateOf("") }
     var registerSuccess by remember { mutableStateOf(false) }
     var showMessage by remember { mutableStateOf(false) }
 
@@ -101,7 +102,7 @@ fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseV
             registerSuccess = validateCredentials(user)
             showMessage = true
             if (registerSuccess) {
-                var  newNurse: Nurse = Nurse(nurseId, name, user, password)
+                var  newNurse: Nurse = Nurse(nurseId, name, user, password, imageFile)
                 nurseViewModel.addNurse(newNurse)
                 navController.navigate("homeScreen")
             }

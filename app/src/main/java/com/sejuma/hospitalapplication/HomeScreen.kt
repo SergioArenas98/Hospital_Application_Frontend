@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.sejuma.hospitalapplication.model.Nurse
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
@@ -25,7 +26,7 @@ fun HomeScreen(navController: NavHostController) {
             .padding(16.dp)
     ) {
         Text(
-            text = "Hello to Hospital Application!",
+            text = "Welcome again!",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp, top = 16.dp),
