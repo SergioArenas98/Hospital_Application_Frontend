@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -18,10 +19,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
 import com.sejuma.hospitalapplication.model.Nurse
 import com.sejuma.hospitalapplication.viewmodel.RemoteMessageUiState
 import com.sejuma.hospitalapplication.viewmodel.RemoteViewModel
+import java.lang.reflect.Field
 
 @Composable
 fun NurseSearchScreen(
@@ -162,12 +163,30 @@ fun NurseSearchScreen(
     }
 }
 
+fun getResId(resName: String, c: Class<*>): Int {
+    return try {
+        val idField: Field = c.getDeclaredField(resName)
+        idField.getInt(idField)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        -1
+    }
+}
+
 @Composable
 fun NurseItem(nurse: Nurse) {
 
-    val painter = rememberImagePainter(data = nurse.imageFile) {
-        placeholder(R.drawable.placeholder_image)
-        error(R.drawable.placeholder_image)
+    val imageResId = remember(nurse.imageFile) {
+        getResId(
+            nurse.imageFile.substringBeforeLast("."), // Quitar extensión
+            R.drawable::class.java
+        )
+    }
+
+    val painter = if (imageResId != -1) {
+        painterResource(id = imageResId)
+    } else {
+        painterResource(id = R.drawable.placeholder_image) // Imagen por defecto si no encuentra la imagen
     }
 
     Surface(
