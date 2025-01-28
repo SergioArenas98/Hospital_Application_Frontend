@@ -1,5 +1,6 @@
 package com.sejuma.hospitalapplication
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,6 +34,7 @@ fun NurseSearchScreen(
     val remoteMessageUiState by remoteViewModel.remoteMessageUiState.collectAsState()
 
     LaunchedEffect(Unit) {
+        Log.d("NurseSearch", "Fetching nurses...")
         remoteViewModel.getRemoteNurses()
     }
 

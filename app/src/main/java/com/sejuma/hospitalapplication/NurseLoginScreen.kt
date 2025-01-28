@@ -1,5 +1,7 @@
 package com.sejuma.hospitalapplication
 
+import android.provider.CalendarContract
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,7 +44,8 @@ fun NurseLoginScreen(
     val loginMessageUiState by remoteViewModel.loginMessageUiState.collectAsState()
     var user by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-
+    var errorMessage by remember { mutableStateOf("") }
+    var connectMessage by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -83,7 +86,9 @@ fun NurseLoginScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(onClick = {
+                errorMessage = ""
                 remoteViewModel.login(user, password)
+                connectMessage = true
             }) {
                 Text(text = "Login")
             }
@@ -97,20 +102,29 @@ fun NurseLoginScreen(
                     }
                 }
                 is LoginMessageUiState.Error -> {
-                    Text(
-                        text = "Login failed. Please try again.",
+                    errorMessage = "Login failed. Please check your username or password."
+                }
+                is LoginMessageUiState.Loading -> {
+                    if(connectMessage)Text(
+                        text = "Connecting...",
                         style = TextStyle(
-                            color = MaterialTheme.colorScheme.error,
+                            color = Color.Blue,
                             fontSize = 16.sp
                         ),
                         modifier = Modifier.padding(top = 8.dp)
                     )
                 }
-                is LoginMessageUiState.Loading -> {
-                }
+            }
+
+            if (errorMessage.isNotEmpty()) {
+                Text(
+                    text = errorMessage,
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
             }
         }
-
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)

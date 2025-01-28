@@ -11,6 +11,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
@@ -21,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,24 +33,22 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.sejuma.hospitalapplication.model.Nurse
+import com.sejuma.hospitalapplication.viewmodel.LoginMessageUiState
 import com.sejuma.hospitalapplication.viewmodel.NurseViewModel
+import com.sejuma.hospitalapplication.viewmodel.RemoteViewModel
 
 @Composable
-fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseViewModel = viewModel()){
+fun NurseRegisterScreen(navController: NavHostController,remoteViewModel: RemoteViewModel){
 
-    var nurseId by remember { mutableIntStateOf(0) }
     var name by remember { mutableStateOf("") }
     var user by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var imageFile by remember { mutableStateOf("") }
     var registerSuccess by remember { mutableStateOf(false) }
     var showMessage by remember { mutableStateOf(false) }
 
-    val nurses by nurseViewModel.nurses.observeAsState(emptyList())
-
-    fun validateCredentials(user: String): Boolean {
-        return !nurses.any{it.user == user}
-    }
+    val loginMessageUiState by remoteViewModel.loginMessageUiState.collectAsState()
+    var errorMessage by remember { mutableStateOf("") }
+    var connectMessage by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -99,15 +100,41 @@ fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseV
 
         // Register Button
         Button(onClick = {
-            registerSuccess = validateCredentials(user)
-            showMessage = true
-            if (registerSuccess) {
-                var  newNurse: Nurse = Nurse(nurseId, name, user, password, imageFile)
-                nurseViewModel.addNurse(newNurse)
-                navController.navigate("homeScreen")
-            }
+            errorMessage = ""
+            remoteViewModel.register(name, user, password)
+            connectMessage = true
         }) {
             Text(text = stringResource(id = R.string.registerButton))
+        }
+
+        when (loginMessageUiState) {
+            is LoginMessageUiState.Success -> {
+                LaunchedEffect(Unit) {
+                    navController.navigate("homeScreen")
+                }
+            }
+            is LoginMessageUiState.Error -> {
+                errorMessage = "Login failed. Please check your username or password."
+            }
+            is LoginMessageUiState.Loading -> {
+                if(connectMessage)Text(
+                    text = "Connecting...",
+                    style = TextStyle(
+                        color = Color.Blue,
+                        fontSize = 16.sp
+                    ),
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+        }
+
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -128,5 +155,4 @@ fun NurseRegisterScreen(navController: NavHostController, nurseViewModel: NurseV
 @Composable
 fun NurseRegisterScreenPreview() {
     val navController = rememberNavController()
-    NurseRegisterScreen(navController = navController)
 }
