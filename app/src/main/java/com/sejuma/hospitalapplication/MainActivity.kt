@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
                         HomeScreen(navController = navController)
                     }
                     composable("registerScreen") {
-                        NurseRegisterScreen(navController = navController)
+                        NurseRegisterScreen(navController = navController, remoteViewModel = viewModel())
                     }
                     composable("nurseSearchScreen") {
                         NurseSearchScreen(navController = navController, remoteViewModel = viewModel())
