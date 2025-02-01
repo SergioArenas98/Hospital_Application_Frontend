@@ -1,6 +1,7 @@
 package com.sejuma.hospitalapplication.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sejuma.hospitalapplication.model.LoginRequest
@@ -12,8 +13,10 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 sealed interface RemoteMessageUiState {
     data class Success(val remoteMessage: List<Nurse>) : RemoteMessageUiState
@@ -38,9 +41,14 @@ interface RemoteNurseInterface {
 
     @POST("nurse/new")
     suspend fun register(@Body registerRequest: RegisterRequest): Nurse
+
+    @DELETE("nurse/{nurseId}")
+    suspend fun deleteNurse(@Path("nurseId") id: Int): Boolean
 }
 
 class RemoteViewModel : ViewModel() {
+
+
 
     private val _remoteMessageUiState = MutableStateFlow<RemoteMessageUiState>(RemoteMessageUiState.Loading)
     var remoteMessageUiState: StateFlow<RemoteMessageUiState> = _remoteMessageUiState
@@ -48,8 +56,13 @@ class RemoteViewModel : ViewModel() {
     private val _loginMessageUiState = MutableStateFlow<LoginMessageUiState>(LoginMessageUiState.Loading)
     var loginMessageUiState: StateFlow<LoginMessageUiState> = _loginMessageUiState
 
+    private val _loggedInNurse = MutableStateFlow<Nurse?>(null) // 🔹 Guarda la enfermera logueada
+    val loggedInNurse: StateFlow<Nurse?> = _loggedInNurse
+
+    var deleteNurseState = mutableStateOf<Boolean?>(null)
+
     val connection = Retrofit.Builder()
-        .baseUrl("http://192.168.2.1:8080/")
+        .baseUrl("http://10.0.2.2:8080/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -81,6 +94,11 @@ class RemoteViewModel : ViewModel() {
                 val nurse = remoteService.login(loginRequest)
                 Log.d("Login", "Login successful: $nurse")
                 _loginMessageUiState.value = LoginMessageUiState.Success(nurse)
+                Log.d("RemoteViewModel", "Updated loginMessageUiState: ${_loginMessageUiState.value}")
+
+                _loggedInNurse.value = nurse // 🔹 Guardar enfermera logueada
+                Log.d("Login", "Nurse logged in and stored: ${_loggedInNurse.value}")
+
             } catch (e: retrofit2.HttpException) {
                 Log.e("Login", "HTTP error: ${e.code()} - ${e.message}", e)
                 _loginMessageUiState.value = LoginMessageUiState.Error
@@ -91,6 +109,8 @@ class RemoteViewModel : ViewModel() {
                 Log.e("Login", "Unexpected error: ${e.message}", e)
                 _loginMessageUiState.value = LoginMessageUiState.Error
             }
+            Log.d("Login", "Login state updated to: ${_loginMessageUiState.value}")
+
         }
     }
 
@@ -104,6 +124,7 @@ class RemoteViewModel : ViewModel() {
                 val nurse = remoteService.register(registerRequest)
                 Log.d("Registro", "Login successful: $nurse")
                 _loginMessageUiState.value = LoginMessageUiState.Success(nurse)
+                _loggedInNurse.value = nurse // 🔹 Guardar enfermera después de registrarse
             } catch (e: retrofit2.HttpException) {
                 Log.e("Registro", "HTTP error: ${e.code()} - ${e.message}", e)
                 _loginMessageUiState.value = LoginMessageUiState.Error
@@ -114,6 +135,31 @@ class RemoteViewModel : ViewModel() {
                 Log.e("Registro", "Unexpected error: ${e.message}", e)
                 _loginMessageUiState.value = LoginMessageUiState.Error
             }
+        }
+    }
+
+    //Delete
+    fun deleteNurse(nurseId: Int) {
+        viewModelScope.launch {
+            try {
+                deleteNurseState.value = null
+                val response = remoteService.deleteNurse(nurseId)
+                deleteNurseState.value = response
+
+                if(response) {
+                    Log.d("DeleteNurse", "Nurse with ID $nurseId deleted successfully")
+                    _loggedInNurse.value = null // 🔹 Eliminar usuario logueado
+                    _loginMessageUiState.value = LoginMessageUiState.Loading // Reiniciar sesión
+                } else {
+                    Log.e("DeleteNurse", "Failed to delete nurse with ID $nurseId")
+
+                }
+
+            } catch (e: Exception) {
+                Log.e("DeleteNurse", "Error deleting nurse: ${e.message}", e)
+                deleteNurseState.value = false
+            }
+
         }
     }
 }

@@ -7,4 +7,6 @@
     <string name="registerButton">Register</string>
     <string name="loginButton">Login</string>
     <string name="logoutButton">LogOut</string>
+    <string name="deleteButton">Delete</string>
+
 </resources>
