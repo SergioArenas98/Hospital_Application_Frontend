@@ -8,5 +8,6 @@
     <string name="loginButton">Login</string>
     <string name="logoutButton">LogOut</string>
     <string name="deleteButton">Delete</string>
+    <string name="updateButton">Update</string>
 
 </resources>

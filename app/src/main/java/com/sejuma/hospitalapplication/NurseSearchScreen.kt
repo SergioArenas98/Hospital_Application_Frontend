@@ -21,8 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.sejuma.hospitalapplication.model.Nurse
+import com.sejuma.hospitalapplication.viewmodel.DeleteMessageUiState
+import com.sejuma.hospitalapplication.viewmodel.GetNurseMessageUiState
 import com.sejuma.hospitalapplication.viewmodel.RemoteMessageUiState
 import com.sejuma.hospitalapplication.viewmodel.RemoteViewModel
+import com.sejuma.hospitalapplication.viewmodel.UpdateMessageUiState
 import java.lang.reflect.Field
 
 @Composable
@@ -162,6 +165,16 @@ fun NurseSearchScreen(
                 }
             }
         }
+
+        GetNurseMessageUiState.Error -> TODO()
+        DeleteMessageUiState.Error -> TODO()
+        UpdateMessageUiState.Error -> TODO()
+        GetNurseMessageUiState.Loading -> TODO()
+        DeleteMessageUiState.Loading -> TODO()
+        UpdateMessageUiState.Loading -> TODO()
+        is GetNurseMessageUiState.Success -> TODO()
+        is DeleteMessageUiState.Success -> TODO()
+        is UpdateMessageUiState.Success -> TODO()
     }
 }
 

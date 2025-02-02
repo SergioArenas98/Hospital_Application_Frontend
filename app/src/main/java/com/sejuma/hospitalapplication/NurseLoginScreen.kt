@@ -83,7 +83,7 @@ fun NurseLoginScreen(
 
             Button(onClick = {
                 errorMessage = ""
-                remoteViewModel.login(user, password)
+                remoteViewModel.login(user, password, navController.context)
                 connectMessage = true
             }) {
                 Text(text = "Login")
