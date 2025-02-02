@@ -81,9 +81,10 @@ fun NurseSearchScreen(
             }
         }
         is RemoteMessageUiState.Success -> {
+            // Aquí manejamos correctamente el éxito
             val nurses = (remoteMessageUiState as RemoteMessageUiState.Success).remoteMessage
 
-            // Filter nurses based on search query
+            // Filtrar enfermeras según la búsqueda
             val filteredNurses = nurses.filter {
                 searchQuery.text.isEmpty() ||
                         it.name.contains(searchQuery.text, ignoreCase = true) ||
@@ -95,7 +96,7 @@ fun NurseSearchScreen(
                     .fillMaxSize()
                     .padding(30.dp)
             ) {
-                // Title
+                // Título
                 Text(
                     text = "Search Nurse",
                     modifier = Modifier
@@ -108,7 +109,7 @@ fun NurseSearchScreen(
                     )
                 )
 
-                // Search field
+                // Campo de búsqueda
                 BasicTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
@@ -141,7 +142,7 @@ fun NurseSearchScreen(
                     }
                 )
 
-                // Nurse List
+                // Lista de enfermeras
                 LazyColumn(modifier = Modifier
                     .weight(1f, fill = false)
                 ) {
@@ -150,10 +151,10 @@ fun NurseSearchScreen(
                     }
                 }
 
-                // Spacer
+                // Espaciador
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Button to go back to main menu
+                // Botón para regresar al menú principal
                 Button(modifier = Modifier.padding(top = 8.dp),
                     onClick = { navController.navigate("homeScreen") }) {
                     Text(
@@ -167,14 +168,15 @@ fun NurseSearchScreen(
         }
 
         GetNurseMessageUiState.Error -> TODO()
+
         DeleteMessageUiState.Error -> TODO()
         UpdateMessageUiState.Error -> TODO()
-        GetNurseMessageUiState.Loading -> TODO()
         DeleteMessageUiState.Loading -> TODO()
         UpdateMessageUiState.Loading -> TODO()
-        is GetNurseMessageUiState.Success -> TODO()
         is DeleteMessageUiState.Success -> TODO()
         is UpdateMessageUiState.Success -> TODO()
+        GetNurseMessageUiState.Loading -> TODO()
+        is GetNurseMessageUiState.Success -> TODO()
     }
 }
 

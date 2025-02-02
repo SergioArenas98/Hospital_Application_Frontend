@@ -17,6 +17,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
@@ -40,6 +41,7 @@ sealed interface GetNurseMessageUiState {
     object Error : GetNurseMessageUiState, RemoteMessageUiState
 }
 
+
 sealed interface DeleteMessageUiState {
     object Loading : DeleteMessageUiState, RemoteMessageUiState
     data class Success(val deleteMessage: Boolean) : DeleteMessageUiState, RemoteMessageUiState
@@ -62,35 +64,38 @@ interface RemoteNurseInterface {
     @POST("nurse/new")
     suspend fun register(@Body registerRequest: RegisterRequest): Nurse
 
+
     @DELETE("nurse/{nurseId}")
     suspend fun deleteNurse(@Path("nurseId") id: Int): Boolean
-
+  
     @GET("nurse/{nurseId}")
     suspend fun getNurseById(@Path("nurseId") nurseId: Int): Nurse
-
+  
     @PUT("nurse/{nurseId}")
     suspend fun updateNurse(@Path("nurseId") nurseId: Int, @Body updatedNurse: Nurse): Nurse
-
 }
 
 class RemoteViewModel : ViewModel() {
 
-    private val _remoteMessageUiState = MutableStateFlow<RemoteMessageUiState>(RemoteMessageUiState.Loading)
+    private val _remoteMessageUiState =
+        MutableStateFlow<RemoteMessageUiState>(RemoteMessageUiState.Loading)
     var remoteMessageUiState: StateFlow<RemoteMessageUiState> = _remoteMessageUiState
 
-    private val _loginMessageUiState = MutableStateFlow<LoginMessageUiState>(LoginMessageUiState.Loading)
+    private val _loginMessageUiState =
+        MutableStateFlow<LoginMessageUiState>(LoginMessageUiState.Loading)
     var loginMessageUiState: StateFlow<LoginMessageUiState> = _loginMessageUiState
 
     private val _getNurseMessageUiState =
         MutableStateFlow<GetNurseMessageUiState>(GetNurseMessageUiState.Loading)
     var getNurseMessageUiState: StateFlow<GetNurseMessageUiState> = _getNurseMessageUiState
 
+
     private val _updateNurseUiState = MutableStateFlow<UpdateMessageUiState>(UpdateMessageUiState.Loading)
     val updateNurseUiState: StateFlow<UpdateMessageUiState> = _updateNurseUiState
 
     var deleteNurseState = mutableStateOf<Boolean?>(null)
 
-    val connection = Retrofit.Builder()
+  val connection = Retrofit.Builder()
         .baseUrl("http://10.0.2.2:8080/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()

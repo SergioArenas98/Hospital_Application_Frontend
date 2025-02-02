@@ -54,8 +54,6 @@ fun ProfileScreen(
         var user by remember { mutableStateOf("") }
         val password by remember { mutableStateOf("") }
         var imageFile by remember { mutableStateOf("") }
-
-
         if (nurseId != 0) {
             Log.d("IDPASS", "The id passed is $nurseId")
 
@@ -115,7 +113,6 @@ fun ProfileScreen(
                     )
                 }
             }
-
 
 
             //Update
@@ -190,9 +187,8 @@ fun ProfileScreen(
             }
 
 
-
-
         }
     }
 }
+
 
