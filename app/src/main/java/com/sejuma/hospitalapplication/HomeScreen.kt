@@ -1,5 +1,7 @@
 package com.sejuma.hospitalapplication
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -14,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.sejuma.hospitalapplication.model.Nurse
+
 
 @Composable
 fun HomeScreen(navController: NavHostController) {

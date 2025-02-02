@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.sejuma.hospitalapplication.model.Nurse
+import com.sejuma.hospitalapplication.viewmodel.GetNurseMessageUiState
 import com.sejuma.hospitalapplication.viewmodel.RemoteMessageUiState
 import com.sejuma.hospitalapplication.viewmodel.RemoteViewModel
 import java.lang.reflect.Field
@@ -78,9 +79,10 @@ fun NurseSearchScreen(
             }
         }
         is RemoteMessageUiState.Success -> {
+            // Aquí manejamos correctamente el éxito
             val nurses = (remoteMessageUiState as RemoteMessageUiState.Success).remoteMessage
 
-            // Filter nurses based on search query
+            // Filtrar enfermeras según la búsqueda
             val filteredNurses = nurses.filter {
                 searchQuery.text.isEmpty() ||
                         it.name.contains(searchQuery.text, ignoreCase = true) ||
@@ -92,7 +94,7 @@ fun NurseSearchScreen(
                     .fillMaxSize()
                     .padding(30.dp)
             ) {
-                // Title
+                // Título
                 Text(
                     text = "Search Nurse",
                     modifier = Modifier
@@ -105,7 +107,7 @@ fun NurseSearchScreen(
                     )
                 )
 
-                // Search field
+                // Campo de búsqueda
                 BasicTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
@@ -138,7 +140,7 @@ fun NurseSearchScreen(
                     }
                 )
 
-                // Nurse List
+                // Lista de enfermeras
                 LazyColumn(modifier = Modifier
                     .weight(1f, fill = false)
                 ) {
@@ -147,10 +149,10 @@ fun NurseSearchScreen(
                     }
                 }
 
-                // Spacer
+                // Espaciador
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Button to go back to main menu
+                // Botón para regresar al menú principal
                 Button(modifier = Modifier.padding(top = 8.dp),
                     onClick = { navController.navigate("homeScreen") }) {
                     Text(
@@ -162,6 +164,10 @@ fun NurseSearchScreen(
                 }
             }
         }
+
+        GetNurseMessageUiState.Error -> TODO()
+        GetNurseMessageUiState.Loading -> TODO()
+        is GetNurseMessageUiState.Success -> TODO()
     }
 }
 
