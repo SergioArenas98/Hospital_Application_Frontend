@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -48,6 +49,11 @@ fun ProfileScreen(
         val sharedPref = context.getSharedPreferences("UserSession", Context.MODE_PRIVATE)
         val nurseId = sharedPref.getInt("nurse_id", 0) // Retorna 0 si no encuentra el valor
 
+        var nurseUpdated : Nurse
+        var name by remember { mutableStateOf("") }
+        var user by remember { mutableStateOf("") }
+        val password by remember { mutableStateOf("") }
+        var imageFile by remember { mutableStateOf("") }
         if (nurseId != 0) {
             Log.d("IDPASS", "The id passed is $nurseId")
 
@@ -107,6 +113,66 @@ fun ProfileScreen(
                     )
                 }
             }
+
+
+            //Update
+// Campos editables
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Name") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+            )
+
+            OutlinedTextField(
+                value = user,
+                onValueChange = { user = it },
+                label = { Text("Username") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+            )
+
+
+
+
+
+
+            Button(modifier = Modifier
+                .padding(top = 20.dp, start = 8.dp),
+                onClick = { nurse?.let {
+                    val updatedNurse = it.copy(name = name, user = user, password = password, imageFile = imageFile)
+                    remoteViewModel.updateNurse(nurseId, updatedNurse)
+                    navController.navigate("profileScreen")
+                } }) {
+                Text(
+                    text = stringResource(id = R.string.updateButton),
+                    style = TextStyle(
+                        fontSize = 14.sp
+                    )
+                )
+            }
+
+
+
+            //Delete
+            Button(modifier = Modifier
+                .padding(top = 20.dp, start = 8.dp),
+                onClick = { remoteViewModel.deleteNurse(nurseId)
+                    navController.navigate("nurseLoginScreen") }) {
+                Text(
+                    text = stringResource(id = R.string.deleteButton),
+                    style = TextStyle(
+                        fontSize = 14.sp
+                    )
+                )
+            }
+
+
+
+
 
             // Button to go back to main menu
             Button(modifier = Modifier
