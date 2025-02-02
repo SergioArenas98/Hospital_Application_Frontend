@@ -101,7 +101,7 @@ fun NurseRegisterScreen(navController: NavHostController,remoteViewModel: Remote
         // Register Button
         Button(onClick = {
             errorMessage = ""
-            remoteViewModel.register(name, user, password)
+            remoteViewModel.register(name, user, password, navController.context)
             connectMessage = true
         }) {
             Text(text = stringResource(id = R.string.registerButton))
